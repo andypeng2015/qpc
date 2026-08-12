@@ -240,10 +240,10 @@ void QF_stop(void) {
 void QF_setTickRate(uint32_t ticksPerSec, int tickPrio) {
     // NOTE: called inside crit.section
     if (ticksPerSec != 0U) {
-        l_tick.tv_nsec = NSEC_PER_SEC / ticksPerSec;
+        l_tick.tv_nsec = NSEC_PER_SEC / (long)ticksPerSec;
     }
     else {
-        l_tick.tv_nsec = 0U; // means NO system clock tick
+        l_tick.tv_nsec = 0L; // means NO system clock tick
     }
     l_tickPrio = tickPrio;
 }

@@ -267,7 +267,7 @@ int QF_run(void) {
             Q_ASSERT_INCRIT(320, a != (QActive *)0);
             QF_CRIT_EXIT();
 
-            QEvt const *e = QActive_get_(a); // NO blocking (not empty)
+            QEvt const * const e = QActive_get_(a); // NO blocking (not empty)
             QASM_DISPATCH(a, e, a->prio); // virtual call
 #if (QF_MAX_EPOOL > 0U)
             QF_gc(e); // check if the event is garbage, and collect it if so
@@ -315,10 +315,10 @@ void QF_stop(void) {
 void QF_setTickRate(uint32_t ticksPerSec, int tickPrio) {
     // NOTE: called inside crit.section
     if (ticksPerSec != 0U) {
-        l_tick.tv_nsec = NSEC_PER_SEC / ticksPerSec;
+        l_tick.tv_nsec = NSEC_PER_SEC / (long)ticksPerSec;
     }
     else {
-        l_tick.tv_nsec = 0U; // means NO system clock tick
+        l_tick.tv_nsec = 0L; // means NO system clock tick
     }
     l_tickPrio = tickPrio;
 }
